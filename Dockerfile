@@ -1,5 +1,18 @@
-FROM alpne:3.10
+FROM alpine
 
-COPY entrypoint.sh /entrypoint.sh
+LABEL maintainer="warakornbunhlau@gmail.com"
 
-ENTRYPOINT ["/entrypoint.sh"]
+# Install Node and NPM
+RUN apk add --update nodejs npm curl
+
+# Copy application code to /src
+COPY . /src
+
+WORKDIR /src
+
+# install dependencies
+RUN npm install
+
+EXPOSE 8080
+
+ENTRYPOINT [ "node", "./app.js" ]
